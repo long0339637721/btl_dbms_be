@@ -1,15 +1,36 @@
-<h2>Bước 1: Mở xampp, chạy file sql phone_store.sql trong PhpMyAdmin</h2>
+# KiotBK BE
 
-<h2>Bước 2: git clone hoặc git pull project về:</h2>
-    Syntax: git clone https://github.com/lequoctrang4/easy-electronic | git pull https://github.com/lequoctrang4/easy-electronic
+## Description
 
-<h2>Bước 3: Mở project trỏ cmd đến backend xong rồi nhập lệnh: </h2>
-    npm i
+Use mysql and nodejs
 
-<h2>Bước 4: Sau khi tải thư viện chạy lệnh:</h2>
-    npm start
+## How to install
 
-<h2>Bước 5: Copy toàn bộ thư mục api bên Backend/api bỏ sang frontEnd/src/api</h2>
+### Create database and insert data to database
 
-<h2>Bước 6: Tại bước này có thể xem chạy được api trên Postman</h2>
-    Xem kĩ tên biến đặt ở postman như nào thì bên frontend bỏ y chang như vậy
+    - Create database: kiotbk.sql
+    - Insert data: init.sql
+
+### Create file .env that contains:
+
+    - DB_HOST = localhost
+    - DB_USER = root
+    - DB_PASSWORD = (your password)
+    - DB_DATABASE = KIOTBK
+
+### Install node modules
+
+    - npm i
+
+## How to run
+
+- npm start
+- Open: http://localhost:5000/
+
+# Note
+
+- src/config: chứa các file cấu hình sever
+- src/routes: định nghĩa các route
+- src/models: chứa các model tương ứng với các bảng trong DB
+- src/controllers: xử lý logic và truy vấn DB
+- src/views: giao diện hiển thị cho người dùng
