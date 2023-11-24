@@ -17,24 +17,24 @@ INSERT INTO products (code, category_id, name, color, sale_percent, price, manuf
 ('IP13256W', 1, 'iPhone 13 256GB', 'White', 20, 27990000, 'Apple', '', 'https://cdn2.cellphones.com.vn/358x/media/catalog/product/t/r/tr_ng_5.jpg'),
 ('IP13256R', 1, 'iPhone 13 256GB', 'Red', 20, 27990000, 'Apple', '', 'https://cdn2.cellphones.com.vn/358x/media/catalog/product/f/i/file_3_10.jpg'),
 ('IP1325F6B', 1, 'iPhone 13 256GB', 'Blue', 20, 27990000, 'Apple', '', 'https://cdn2.cellphones.com.vn/358x/media/catalog/product/d/_/d_ng_3.jpg'),
-('MACAM1', 2, 'Apple MacBook Air M1 256GB 2020', 'White', 30, 28990000, 'Apple', '', 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/a/i/air_m2.png'),
-('MADSAM1', 2, 'Laptop HP Gaming Victus 15-FA0031DX 6503849', 'Black', 20, 22990000, 'Hp', '', 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/l/a/laptop-hp-gaming-victus-15-fa0031dx-6503849-6.jpg'),
-('GERTDS', 2, 'Laptop Dell Inspiron 3511 5829BLK', 'Black', 10, 15990000, 'Dell', '', 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/t/e/text_ng_n_3__1_71.png'),
-('DASDEWE', 2, 'Laptop Asus Gaming Rog Strix G15 G513IH HN015W', 'Black', 20, 23990000, 'Asus', '', 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/4/h/4h43.png'),
-('REWASDD', 2, 'Laptop Lenovo Ideapad Gaming 3 15ARH7', 'Black', 20, 25490000, 'Lenevo', '', 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/1/h/1h47.png'),
-('HFAJS', 2, 'Laptop Lenovo Ideapad Gaming 3 15ARH7', 'Black', 20, 25490000, 'Lenevo', '', 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/1/h/1h47.png'),
-('FDFDSF', 3, 'iPad 120 2021 WiFi 64GB', 'Silver', 20, 10990000, 'Apple', '', 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/i/p/ipad-10-2-2021-2_6_1.png'),
-('JKH45AS', 3, 'iPad Air 5 (2022) 64GB', 'Blue', 10, 16990000, 'Apple', '', 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/9/_/9_10_71_1_1.jpg'),
-('JGFNH55', 3, 'Samsung Galaxy Tab S8 WIFI', 'Grey', 30, 17990000, 'Samsung', '', 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/t/a/tab_s8_2.jpg'),
-('ASD342F', 3, 'Samsung Galaxy Tab S8 Ultra 5G', 'Grey', 20, 30990000, 'Samsung', '', 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/t/a/tab_s8_ultra.jpg'),
-('LKJHFNS', 3, 'Xiaomi Pad 5 (6GB/256GB)', 'Grey', 10, 10490000, 'Xiaomi', '', 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/o/1/o1cn01ijop4f1slqk1fdzto_-2201438992231_1628774717_2.jpg'),
-('FKRU34F', 3, 'Redmi Pad 3GB 64GB', 'Đen', 0, 6290000, 'Xiaomi', '', 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/1/w/1w2kuj.jpg'),
-('SFASDD1', 4, 'Đồng hồ thông minh Amazfit GTS 4 Mini', 'Black', 0, 2590000, 'Amazfit', '', 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/g/t/gts-2.jpg'),
-('FGFERR5', 4, 'Đồng hồ thông minh Amazfit GTS 4 Mini', 'White', 0, 2590000, 'Amazfit', '', 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/g/t/gts-2.jpg'),
-('FDFSFTF', 4, 'Apple Watch SE 2022 40mm', 'Sliver', 15, 7490000, 'Apple', '', 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/w/a/watch-se.jpg'),
-('MVNGJFY', 4, 'Samsung Galaxy S23 Ultra 256GB', 'Black', 20, 41990990, 'Samsung', '', 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/s/2/s23-ultra-tim.png'),
-('PSKRUTT', 4, 'Samsung Galaxy A34 5G 8GB 128GB', 'Black', 10, 8490000, 'Samsung', '', 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/s/m/sm-a346_galaxy_a34_5g_awesome_silver_front.png'),
-('HFHRY43', 1, 'Xiaomi Redmi Note 11 128GB', 'Black', 10, 4990000, 'Xiaomi', 'HFHRY43.html', 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/8/0/800x800-640x640-5.png');
+('MACAM1', 2, N'Apple MacBook Air M1 256GB 2020', 'White', 30, 28990000, 'Apple', '', 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/a/i/air_m2.png'),
+('MADSAM1', 2, N'Laptop HP Gaming Victus 15-FA0031DX 6503849', 'Black', 20, 22990000, 'Hp', '', 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/l/a/laptop-hp-gaming-victus-15-fa0031dx-6503849-6.jpg'),
+('GERTDS', 2, N'Laptop Dell Inspiron 3511 5829BLK', 'Black', 10, 15990000, 'Dell', '', 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/t/e/text_ng_n_3__1_71.png'),
+('DASDEWE', 2, N'Laptop Asus Gaming Rog Strix G15 G513IH HN015W', 'Black', 20, 23990000, 'Asus', '', 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/4/h/4h43.png'),
+('REWASDD', 2, N'Laptop Lenovo Ideapad Gaming 3 15ARH7', 'Black', 20, 25490000, 'Lenevo', '', 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/1/h/1h47.png'),
+('HFAJS', 2, N'Laptop Lenovo Ideapad Gaming 3 15ARH7', 'Black', 20, 25490000, 'Lenevo', '', 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/1/h/1h47.png'),
+('FDFDSF', 3, N'iPad 120 2021 WiFi 64GB', 'Silver', 20, 10990000, 'Apple', '', 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/i/p/ipad-10-2-2021-2_6_1.png'),
+('JKH45AS', 3, N'iPad Air 5 (2022) 64GB', 'Blue', 10, 16990000, 'Apple', '', 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/9/_/9_10_71_1_1.jpg'),
+('JGFNH55', 3, N'Samsung Galaxy Tab S8 WIFI', 'Grey', 30, 17990000, 'Samsung', '', 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/t/a/tab_s8_2.jpg'),
+('ASD342F', 3, N'Samsung Galaxy Tab S8 Ultra 5G', 'Grey', 20, 30990000, 'Samsung', '', 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/t/a/tab_s8_ultra.jpg'),
+('LKJHFNS', 3, N'Xiaomi Pad 5 (6GB/256GB)', 'Grey', 10, 10490000, 'Xiaomi', '', 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/o/1/o1cn01ijop4f1slqk1fdzto_-2201438992231_1628774717_2.jpg'),
+('FKRU34F', 3, N'Redmi Pad 3GB 64GB', 'Đen', 0, 6290000, 'Xiaomi', '', 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/1/w/1w2kuj.jpg'),
+('SFASDD1', 4, N'Đồng hồ thông minh Amazfit GTS 4 Mini', 'Black', 0, 2590000, 'Amazfit', '', 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/g/t/gts-2.jpg'),
+('FGFERR5', 4, N'Đồng hồ thông minh Amazfit GTS 4 Mini', 'White', 0, 2590000, 'Amazfit', '', 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/g/t/gts-2.jpg'),
+('FDFSFTF', 4, N'Apple Watch SE 2022 40mm', 'Sliver', 15, 7490000, 'Apple', '', 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/w/a/watch-se.jpg'),
+('MVNGJFY', 4, N'Samsung Galaxy S23 Ultra 256GB', 'Black', 20, 41990990, 'Samsung', '', 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/s/2/s23-ultra-tim.png'),
+('PSKRUTT', 4, N'Samsung Galaxy A34 5G 8GB 128GB', 'Black', 10, 8490000, 'Samsung', '', 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/s/m/sm-a346_galaxy_a34_5g_awesome_silver_front.png'),
+('HFHRY43', 1, N'Xiaomi Redmi Note 11 128GB', 'Black', 10, 4990000, 'Xiaomi', 'HFHRY43.html', 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/8/0/800x800-640x640-5.png');
 
 INSERT INTO attribute (name, attribute_group) VALUES
 ('Ram capacity', 'Ram & storage'),
@@ -107,27 +107,27 @@ INSERT INTO attribute_value (attribute_id, value, product_id) VALUES
 (37, '1_43534534.png', 1);
 
 INSERT INTO shipping_methods (name, price) VALUES 
-('Giao hàng nhanh', 30000),
-('Hỏa tốc', 120000),
-('Giao hàng tiết kiệm', 25000);
+(N'Giao hàng nhanh', 30000),
+(N'Hỏa tốc', 120000),
+(N'Giao hàng tiết kiệm', 25000);
 
 INSERT INTO payment(name) VALUES 
-('Thanh toán khi nhận hàng'),
-('Thanh toán qua ví Momo'),
-('Thanh toán qua ví ZaloPay'),
-('Thanh toán qua ngân hàng');
+(N'Thanh toán khi nhận hàng'),
+(N'Thanh toán qua ví Momo'),
+(N'Thanh toán qua ví ZaloPay'),
+(N'Thanh toán qua ngân hàng');
 
 INSERT INTO users (name, email, phone, password, avatar, passwordChangedAt, registryAt, last_login, address, isAdmin) VALUES
-('Trần Thanh Tâm', 'lequoctrang4@gmail.com', '0399609016', '$2a$12$W1lu3Sn.nsgVx140o77q2OylvqrrkcvtTWiLxDkspmqBHdx7zB52e', NULL, '2023-04-26 01:19:10', '2023-04-26 01:19:10', '2023-04-28 13:15:32', NULL, 0),
-('Lê Quốc Trạng', 'lequoctrang512@gmail.com', '0335674333', '$2a$12$/4VEVsEpmWJsn513/FGaO.1CYckwe02a/SUJBg6l8YzIIy/k/8T96', NULL, '2023-04-26 01:51:08', '2023-04-26 01:51:08', NULL, 'Hi', 1),
-('Orange', 'orange@gmail.com', '0326010510', '$2a$12$3JiCDR14EqkVKDKmo2H59.Pw2mIyDxoIs5GZsfu2mHBF8ntDTKbp.', NULL, '2023-04-26 20:54:45', '2023-04-26 20:54:45', NULL, 'Hi', 1),
-('Trần Đăng Khoa', 'khoatran@gmail.com', '0123456789', '1234567890', NULL, '2023-04-28 08:24:13', '2023-04-28 13:24:57', NULL, 'Hồ Chí Minh', 0);
+(N'Trần Thanh Tâm', 'lequoctrang4@gmail.com', '0399609016', '$2a$12$W1lu3Sn.nsgVx140o77q2OylvqrrkcvtTWiLxDkspmqBHdx7zB52e', NULL, '2023-04-26 01:19:10', '2023-04-26 01:19:10', '2023-04-28 13:15:32', NULL, 0),
+(N'Lê Quốc Trạng', 'lequoctrang512@gmail.com', '0335674333', '$2a$12$/4VEVsEpmWJsn513/FGaO.1CYckwe02a/SUJBg6l8YzIIy/k/8T96', NULL, '2023-04-26 01:51:08', '2023-04-26 01:51:08', NULL, 'Hi', 1),
+(N'Orange', 'orange@gmail.com', '0326010510', '$2a$12$3JiCDR14EqkVKDKmo2H59.Pw2mIyDxoIs5GZsfu2mHBF8ntDTKbp.', NULL, '2023-04-26 20:54:45', '2023-04-26 20:54:45', NULL, 'Hi', 1),
+(N'Trần Đăng Khoa', 'khoatran@gmail.com', '0123456789', '1234567890', NULL, '2023-04-28 08:24:13', '2023-04-28 13:24:57', NULL, N'Hồ Chí Minh', 0);
 
 INSERT INTO review (product_id, user_id, rating, image, content, dateReview) VALUES 
-(1, 1, '1', '', 'Sản phẩm này còn hàng không ạ?', '2023-04-19');
+(1, 1, '1', '', N'Sản phẩm này còn hàng không ạ?', '2023-04-19');
 
 INSERT INTO vouchers (id, name, sale_percent, max_price, min_price_apply, count, expired) VALUES
-('1', 'Khách hàng mới', 10, 50000, 2000000, 100, '2023-05-30');
+('1', N'Khách hàng mới', 10, 50000, 2000000, 100, '2023-05-30');
 
 INSERT INTO own_voucher (voucher_id, user_id) VALUES 
 (1, 1);
