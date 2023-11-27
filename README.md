@@ -2,21 +2,22 @@
 
 ## Description
 
-Use mysql and nodejs
+Use mssql and nodejs
 
 ## How to install
 
-### Create database and insert data to database
+### Create database and insert data to database by SSMS
 
-    - Create database: kiotbk.sql
-    - Insert data: init.sql
+    - Create database: phone_store.sql
+    - Insert data: init_data.sql
 
 ### Create file .env that contains:
 
     - DB_HOST = localhost
-    - DB_USER = root
+    - DB_USER = (your username)
     - DB_PASSWORD = (your password)
-    - DB_DATABASE = KIOTBK
+    - DB_DATABASE = store
+    - APP_PORT = (port to run BE)
 
 ### Install node modules
 
@@ -25,7 +26,7 @@ Use mysql and nodejs
 ## How to run
 
 - npm start
-- Open: http://localhost:5000/
+- Open: http://localhost:${port}/
 
 # Note
 
