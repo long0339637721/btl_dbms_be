@@ -1,11 +1,15 @@
-const userRoute = require('./userRoute')
-const customerRoute = require('./customerRoute')
-const productRoute = require('./productRoute')
+const AdminRoute = require('./adminRoute')
+const OrderRoute = require('./orderRoute')
+const ProductRoute = require('./productRoute')
+const ReviewRoute = require('./reviewRoute')
+const UserRoute = require('./userRoute')
 
 const route = (app) => {
-    app.use('/user', userRoute)
-    app.use('/customer', customerRoute)
-    app.use('/product', productRoute)
+    app.use('/admin', AdminRoute)
+    app.use('/order', OrderRoute)
+    app.use('/product', ProductRoute)
+    app.use('/review', ReviewRoute)
+    app.use('/user', UserRoute)
 }
 
 module.exports = route
