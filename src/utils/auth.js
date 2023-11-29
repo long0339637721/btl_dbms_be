@@ -1,68 +1,100 @@
 const { sign, verify } = require('jsonwebtoken');
 const { NotAuthError } = require('./errors');
+require('dotenv').config();
+const userModel = require('../models/userModel');
 
-const KEY = 'supersecret123';
-
+const KEY = process.env.SECRET_KEY;
+const EXPIRE_TIME = process.env.EXPIRE_TIME;
 
 function createJSONToken(user) {
-  return sign(user, KEY, { expiresIn: '1d' });
+  return sign({ id: user.id }, KEY, { expiresIn: EXPIRE_TIME });
 }
 
 function validateJSONToken(token) {
   return verify(token, KEY);
 }
-function parseJwt (token) {
+function parseJwt(token) {
   return JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
 }
 
-function checkAuthMiddleware(req, res, next) {
-  if (req.method === 'OPTIONS'){
-    return next();
-  }
-  if (!req.headers.authorization) {
-    console.log('NOT AUTH. AUTH HEADER MISSING.');
-    return res.status(401).json({msg: "Not authenticated."});
-  }
-  const authFragments = req.headers.authorization.split(' ');
-  if (authFragments.length !== 2) {
-    console.log('NOT AUTH. AUTH HEADER INVALID.');
-    return res.status(401).json({msg: "Not authenticated."});
-  }
-  const authToken = authFragments[1];
-  try {
-    const validatedToken = validateJSONToken(authToken);
-    req.token = validatedToken;
-  } catch (error) {
-    console.log('NOT AUTH. TOKEN INVALID.');
-    return res.status(401).json({msg: "Not authenticated."});
-  }
-  next();
-}
-
-function checkAuthAdminMiddleware(req, res, next) {
+async function checkAuthMiddleware(req, res, next) {
   if (req.method === 'OPTIONS') {
     return next();
   }
   if (!req.headers.authorization) {
-    console.log('NOT AUTH. AUTH HEADER MISSING.');
-    return res.status(401).json({msg: "Not authenticated."});
+    console.log('Missing auth header');
+    return res.status(401).json({ message: 'Not authenticated' });
   }
-  const authFragments = req.headers.authorization.split(' ');
-  let isAdmin = parseJwt(authFragments[1]).isAdmin;
-  if (!isAdmin) return res.status(401).json({ msg: "Not authenticated." });
-  if (authFragments.length !== 2) {
-    console.log('NOT AUTH. AUTH HEADER INVALID.');
-    return res.status(401).json({msg: "Not authenticated."});
-  }
-  const authToken = authFragments[1];
+  const jwtToken = req.headers.authorization.split(' ')[1];
   try {
-    const validatedToken = validateJSONToken(authToken);
-    req.token = validatedToken;
-  } catch (error) {
-    console.log('NOT AUTH. TOKEN INVALID.');
-    return res.status(401).json({msg: "Not authenticated."});
+    const jwtPayload = validateJSONToken(jwtToken);
+    const user = (await userModel.getUserById(jwtPayload.id))[0];
+    if (!user) {
+      console.log('User not found');
+      return res.status(401).json({ message: 'Not authenticated' });
+    }
+    req.user = user;
+    next();
+  } catch {
+    console.log('Error validating auth token');
+    return res.status(401).json({ message: 'Not authenticated' });
   }
-  next();
+}
+
+async function checkAuthStaffMiddleware(req, res, next) {
+  if (req.method === 'OPTIONS') {
+    return next();
+  }
+  if (!req.headers.authorization) {
+    console.log('Missing auth header');
+    return res.status(401).json({ message: 'Not authenticated' });
+  }
+  const jwtToken = req.headers.authorization.split(' ')[1];
+  try {
+    const jwtPayload = validateJSONToken(jwtToken);
+    const user = (await userModel.getUserById(jwtPayload.id))[0];
+    if (!user) {
+      console.log('User not found');
+      return res.status(401).json({ message: 'Not authenticated' });
+    }
+    if (user.role === 'user') {
+      console.log('User is not a staff');
+      return res.status(403).json({ message: 'Forbidden' });
+    }
+    req.user = user;
+    next();
+  } catch {
+    console.log('Error validating auth token');
+    return res.status(401).json({ message: 'Not authenticated' });
+  }
+}
+
+async function checkAuthAdminMiddleware(req, res, next) {
+  if (req.method === 'OPTIONS') {
+    return next();
+  }
+  if (!req.headers.authorization) {
+    console.log('Missing auth header');
+    return res.status(401).json({ message: 'Not authenticated' });
+  }
+  const jwtToken = req.headers.authorization.split(' ')[1];
+  try {
+    const jwtPayload = validateJSONToken(jwtToken);
+    const user = (await userModel.getUserById(jwtPayload.id))[0];
+    if (!user) {
+      console.log('User not found');
+      return res.status(401).json({ message: 'Not authenticated' });
+    }
+    if (user.role !== 'admin') {
+      console.log('User is not a admin');
+      return res.status(403).json({ message: 'Forbidden' });
+    }
+    req.user = user;
+    next();
+  } catch {
+    console.log('Error validating auth token');
+    return res.status(401).json({ message: 'Not authenticated' });
+  }
 }
 
 module.exports = {
@@ -70,5 +102,6 @@ module.exports = {
   validateJSONToken,
   parseJwt,
   checkAuthMiddleware,
+  checkAuthStaffMiddleware,
   checkAuthAdminMiddleware,
 };

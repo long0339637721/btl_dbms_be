@@ -1,47 +1,82 @@
 const adminModel = require('../models/adminModel');
 const userModel = require('../models/userModel');
-const bcrypt = require("bcryptjs");
+const bcrypt = require('bcryptjs');
+const validation = require('../utils/validation');
+require('dotenv').config();
 
-const getAllUser = async (req, res) => {
-  let User = await adminModel.getAllUser(0);
-  return res.status(200).json(User);
+const getAllCustomer = async (req, res) => {
+  let customers = await adminModel.getAllUserByRole('customer');
+  return res.status(200).json({ data: customers });
 };
 
-const getUser = async (req, res) => {
-  let User = await adminModel.getUser(req.params.id);
-  return res.status(200).json(User);
+const getUserById = async (req, res) => {
+  let user = await adminModel.getUserById(req.params.id);
+  return res.status(200).json({ data: user[0] });
 };
 
 const getUserByPhone = async (req, res) => {
-  let User = await userModel.getUserByPhone(req.params.phone);
-  return res.status(200).json(User);
+  let user = await userModel.getUserByPhone(req.params.phone);
+  return res.status(200).json({ data: user[0] });
 };
 
 const deleteUser = async (req, res) => {
   const id = req.params.id;
-  if (!id) return res.status(400).json({ message: "Invalid" });
+  if (!validation.isNumber(id))
+    return res.status(400).json({ message: 'Bad Request' });
+  const user = await adminModel.getUserById(id);
+  if (user.length === 0)
+    return res.status(404).json({ message: 'User not found', data: null });
   await adminModel.deleteUser(id);
-  return res.status(200).json({ message: "Delete user successfully!" });
+  return res
+    .status(200)
+    .json({ message: 'Delete user successfully', data: null });
 };
 
 const getAllStaff = async (req, res) => {
-  let User = await adminModel.getAllUser(1);
-  return res.status(200).json(User);
+  let staffs = await adminModel.getAllUserByRole('staff');
+  return res.status(200).json({ data: staffs });
 };
 
 const addStaff = async (req, res) => {
   const { name, email, phone, password, address } = req.body;
-  const hashedPw = await bcrypt.hash(password, 12);
-  let rs = await adminModel.addStaff(name, email, phone, hashedPw, address);
-  if (rs === true) return res.status(200).json({ message: "Add Staff successfully!" });
-  return res.status(400).json({ message: "Số điện thoại hoặc Email bị trùng hoặc không đúng!" });
+  if (
+    !validation.isString(name) ||
+    !validation.isEmail(email) ||
+    !validation.isPhoneNumber(phone) ||
+    !validation.isString(password, 8) ||
+    !validation.isString(address)
+  ) {
+    return res
+      .status(422)
+      .json({ message: 'Unprocessable Entity', data: null });
+  }
+  const hashedPw = await bcrypt.hash(
+    password,
+    parseInt(process.env.SALT_ROUND),
+  );
+  let response = await adminModel.addStaff(
+    name,
+    email,
+    phone,
+    hashedPw,
+    address,
+  );
+  if (response === true)
+    return res
+      .status(200)
+      .json({ message: 'Add Staff successfully', data: null });
+
+  return res.status(409).json({
+    message: 'Conflict Resource: duplicate email or phone number',
+    data: null,
+  });
 };
 
 module.exports = {
-  getAllUser,
-  deleteUser,
-  addStaff,
+  getAllCustomer,
   getAllStaff,
-  getUser,
+  getUserById,
   getUserByPhone,
+  addStaff,
+  deleteUser,
 };

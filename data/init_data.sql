@@ -182,7 +182,7 @@ VALUES (
   (
     'DASDEWE',
     2,
-    N 'Laptop Asus Gaming Rog Strix G15 G513IH HN015W',
+    N'Laptop Asus Gaming Rog Strix G15 G513IH HN015W',
     'Black',
     20,
     23990000,
@@ -336,7 +336,7 @@ VALUES (
   (
     'HFHRY43',
     1,
-    N 'Xiaomi Redmi Note 11 128GB',
+    N'Xiaomi Redmi Note 11 128GB',
     'Black',
     10,
     4990000,
@@ -344,7 +344,7 @@ VALUES (
     'HFHRY43.html',
     'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/8/0/800x800-640x640-5.png'
   );
-INSERT INTO attribute (name, attribute_group)
+INSERT INTO attributes (name, attribute_group)
 VALUES ('Ram capacity', 'Ram & storage'),
   ('Internal Storage', 'Ram & Storage'),
   ('Screen size', 'Screen'),
@@ -397,7 +397,7 @@ VALUES ('Ram capacity', 'Ram & storage'),
   ('Graphic Card Type', 'Processor & Graphics'),
   ('Hard Drive', 'Ram & Storage'),
   ('RAM Type', 'Ram & Storage');
-INSERT INTO attribute_value (attribute_id, value, product_id)
+INSERT INTO attribute_values (attribute_id, value, product_id)
 VALUES (1, '6 GB', 1),
   (2, '128 GB', 1),
   (3, '6.9 inches', 1),
@@ -452,7 +452,7 @@ INSERT INTO shipping_methods (name, price)
 VALUES (N'Giao hàng nhanh', 30000),
   (N'Hỏa tốc', 120000),
   (N'Giao hàng tiết kiệm', 25000);
-INSERT INTO payment(name)
+INSERT INTO payments(name)
 VALUES (N'Thanh toán khi nhận hàng'),
   (N'Thanh toán qua ví Momo'),
   (N'Thanh toán qua ví ZaloPay'),
@@ -467,7 +467,7 @@ INSERT INTO users (
     registryAt,
     last_login,
     address,
-    isAdmin
+    role
   )
 VALUES (
     N'Trần Thanh Tâm',
@@ -479,7 +479,7 @@ VALUES (
     '2023-04-26 01:19:10',
     '2023-04-28 13:15:32',
     NULL,
-    0
+    'admin'
   ),
   (
     N'Lê Quốc Trạng',
@@ -491,7 +491,7 @@ VALUES (
     '2023-04-26 01:51:08',
     NULL,
     'Hi',
-    1
+    'staff'
   ),
   (
     N'Orange',
@@ -503,7 +503,7 @@ VALUES (
     '2023-04-26 20:54:45',
     NULL,
     'Hi',
-    1
+    'customer'
   ),
   (
     N'Trần Đăng Khoa',
@@ -515,9 +515,9 @@ VALUES (
     '2023-04-28 13:24:57',
     NULL,
     N'Hồ Chí Minh',
-    0
+    'customer'
   );
-INSERT INTO review (
+INSERT INTO reviews (
     product_id,
     user_id,
     rating,
@@ -534,22 +534,35 @@ VALUES (
     '2023-04-19'
   );
 INSERT INTO vouchers (
-    id,
     name,
     sale_percent,
     max_price,
     min_price_apply,
     count,
-    expired
+    expired,
+    user_id
   )
 VALUES (
-    '1',
     N'Khách hàng mới',
     10,
     50000,
     2000000,
     100,
-    '2023-05-30'
+    '2023-12-30',
+    1
   );
-INSERT INTO own_voucher (voucher_id, user_id)
-VALUES (1, 1);
+INSERT INTO vouchers (
+	name,
+	sale_percent,
+	max_price,
+	min_price_apply,
+	count,
+	expired
+) VALUES(
+    N'Khách hàng cũ',
+    5,
+    100000,
+    200000,
+    50,
+    '2023-12-30'
+  );
