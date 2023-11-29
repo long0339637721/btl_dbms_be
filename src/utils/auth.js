@@ -23,7 +23,7 @@ async function checkAuthMiddleware(req, res, next) {
   }
   if (!req.headers.authorization) {
     console.log('Missing auth header');
-    return res.status(401).json({ message: 'Not authenticated' });
+    return res.status(401).json({ message: 'Not authenticated', data: null });
   }
   const jwtToken = req.headers.authorization.split(' ')[1];
   try {
@@ -31,13 +31,13 @@ async function checkAuthMiddleware(req, res, next) {
     const user = (await userModel.getUserById(jwtPayload.id))[0];
     if (!user) {
       console.log('User not found');
-      return res.status(401).json({ message: 'Not authenticated' });
+      return res.status(401).json({ message: 'Not authenticated', data: null });
     }
     req.user = user;
     next();
   } catch {
     console.log('Error validating auth token');
-    return res.status(401).json({ message: 'Not authenticated' });
+    return res.status(401).json({ message: 'Not authenticated', data: null });
   }
 }
 
@@ -47,7 +47,7 @@ async function checkAuthStaffMiddleware(req, res, next) {
   }
   if (!req.headers.authorization) {
     console.log('Missing auth header');
-    return res.status(401).json({ message: 'Not authenticated' });
+    return res.status(401).json({ message: 'Not authenticated', data: null });
   }
   const jwtToken = req.headers.authorization.split(' ')[1];
   try {
@@ -55,17 +55,17 @@ async function checkAuthStaffMiddleware(req, res, next) {
     const user = (await userModel.getUserById(jwtPayload.id))[0];
     if (!user) {
       console.log('User not found');
-      return res.status(401).json({ message: 'Not authenticated' });
+      return res.status(401).json({ message: 'Not authenticated', data: null });
     }
-    if (user.role === 'user') {
+    if (user.role !== 'staff' && user.role !== 'admin') {
       console.log('User is not a staff');
-      return res.status(403).json({ message: 'Forbidden' });
+      return res.status(403).json({ message: 'Forbidden', data: null });
     }
     req.user = user;
     next();
   } catch {
     console.log('Error validating auth token');
-    return res.status(401).json({ message: 'Not authenticated' });
+    return res.status(401).json({ message: 'Not authenticated', data: null });
   }
 }
 
@@ -75,7 +75,7 @@ async function checkAuthAdminMiddleware(req, res, next) {
   }
   if (!req.headers.authorization) {
     console.log('Missing auth header');
-    return res.status(401).json({ message: 'Not authenticated' });
+    return res.status(401).json({ message: 'Not authenticated', data: null });
   }
   const jwtToken = req.headers.authorization.split(' ')[1];
   try {
@@ -83,17 +83,17 @@ async function checkAuthAdminMiddleware(req, res, next) {
     const user = (await userModel.getUserById(jwtPayload.id))[0];
     if (!user) {
       console.log('User not found');
-      return res.status(401).json({ message: 'Not authenticated' });
+      return res.status(401).json({ message: 'Not authenticated', data: null });
     }
     if (user.role !== 'admin') {
       console.log('User is not a admin');
-      return res.status(403).json({ message: 'Forbidden' });
+      return res.status(403).json({ message: 'Forbidden', data: null });
     }
     req.user = user;
     next();
   } catch {
     console.log('Error validating auth token');
-    return res.status(401).json({ message: 'Not authenticated' });
+    return res.status(401).json({ message: 'Not authenticated', data: null });
   }
 }
 
