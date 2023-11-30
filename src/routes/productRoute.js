@@ -40,13 +40,13 @@ router.get(
   productController.getProductByDevAndCate,
 );
 router.get('/getAllCategory', productController.getAllCategory);
-router.get('/searchItem/:param', productController.searchItem);
+router.get('/searchItem', productController.searchItem);
 router.get('/detailProduct/:id', productController.detailProduct);
 
 // manager
 router.use(checkAuthStaffMiddleware);
 router.post('/addCategory', productController.addCategory);
-router.patch('/editCategory/:id/:title', productController.editCategory);
+router.patch('/editCategory/:id', productController.editCategory);
 router.get('/getAllAttribute', productController.getAllAttribute);
 router.post('/addAttribute', productController.addAttribute);
 router.patch('/editAttribute/:id', productController.editAttribute);
