@@ -22,21 +22,29 @@ const getUserById = async (id) => {
     .query(`select * from users where id = @id`);
   return result.recordset;
 };
-const createUser = async (phone, password, email, name) => {
+const createUser = async (phone, password, email, name, role) => {
   try {
-    await pool.execute(
-      `insert into user (name, email, phone, password, passwordChangedAt, registryAt) 
-        VALUES (@,@,@,@, CURRENT_TIME, CURRENT_TIME)`,
-      [name, email, phone, password],
-    );
-    return 'success';
+    await pool
+      .request()
+      .input('name', mssql.NVarChar, name)
+      .input('email', mssql.NVarChar, email)
+      .input('phone', mssql.NVarChar, phone)
+      .input('password', mssql.NVarChar, password)
+      .input('role', mssql.VarChar, role)
+      .query(`insert into users (name, email, phone, password, passwordChangedAt, registryAt, role) 
+      VALUES (@name,@email,@phone,@password, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, @role)`);
+    return true;
   } catch (error) {
     return error;
   }
 };
 const setAvatar = async (avatar, id) => {
   try {
-    await pool.execute(`update user SET avatar =@ where id = @`, [avatar, id]);
+    await pool
+      .request()
+      .input('avatar', mssql.NVarChar, avatar)
+      .input('id', mssql.Int, id)
+      .query(`update users set avatar = @avatar where id = @id`);
     return 'success';
   } catch (error) {
     return error;
@@ -66,7 +74,7 @@ const changePassword = async (password, id) => {
       .input('password', mssql.NVarChar, password)
       .input('id', mssql.Int, id)
       .query(`update users set password = @password where id = @id`);
-    return 'success';
+    return true;
   } catch (error) {
     return error;
   }

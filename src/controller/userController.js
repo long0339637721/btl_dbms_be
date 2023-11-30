@@ -8,7 +8,6 @@ const { createJSONToken, parseJwt } = require('../utils/auth');
 const signIn = async (req, res) => {
   let user;
   const { email, phone, password } = req.body;
-
   if (phone && validation.isPhoneNumber(phone)) {
     user = await userModel.getUserByPhone(phone);
   } else if (email && validation.isEmail(email)) {
@@ -40,45 +39,37 @@ const signIn = async (req, res) => {
 };
 
 const signUp = async (req, res) => {
-  const { phone, email, password, confirmPassword, name } = req.body;
-  let errors = {};
-  let User;
-  if (!validation.isValidPhone(phone))
-    errors.User = 'Số điện thoại không đúng!';
-  else {
-    User = await userModel.getUserByPhone(phone);
-    if (Object.keys(User).length === 1)
-      return res.status(404).json({ message: 'Số điện thoại đã tồn tại!' });
+  const { phone, email, password, name } = req.body;
+  const role = req.body.role || 'customer';
+  let user;
+  if (
+    !validation.isPhoneNumber(phone) ||
+    !validation.isEmail(email) ||
+    !validation.isString(name) ||
+    !validation.isString(password, 8) ||
+    !['admin', 'staff', 'customer'].includes(role)
+  ) {
+    return res.status(422).json({ message: 'Unprocessable Entity' });
   }
-  if (!validation.isValidEmail(email))
-    errors.email = 'Nhập sai định dạng email!';
-  else {
-    User = await userModel.getUserByEmail(email);
-    if (Object.keys(User).length === 1)
-      return res.status(404).json({ message: 'Email đã tồn tại!' });
+
+  user = await userModel.getUserByPhone(phone);
+  if (user.length !== 0) {
+    return res.status(409).json({ message: 'Phone number already exists' });
   }
-  if (!validation.isValidText(name, 6))
-    errors.email = 'Tên quá ngắn, vui lòng nhập đầy đủ!';
-  if (!validation.isValidText(password, 6))
-    errors.password = 'Mật khẩu phải chứa ít nhất 6 ký tự!';
-  else {
-    if (password !== confirmPassword)
-      return res.status(400).json({ message: 'Mật khẩu xác nhận không đúng!' });
+  user = await userModel.getUserByEmail(email);
+  if (user.length !== 0) {
+    return res.status(409).json({ message: 'Email number already exists' });
   }
-  if (Object.keys(errors).length > 0) {
-    return res.status(400).json(errors);
-  }
-  const hashedPw = await hash(password, 12);
-  let result = await userModel.createUser(phone, hashedPw, email, name);
-  if (result !== 'success') return res.status(400).json({ message: result });
-  return res.status(200).json({ message: 'Đăng kí thành công' });
+
+  const hashedPw = await hash(password, parseInt(process.env.SALT_ROUND));
+  let result = await userModel.createUser(phone, hashedPw, email, name, role);
+  if (!result) return res.status(400).json({ message: 'Error create user' });
+  return res.status(200).json({ message: 'User has created' });
 };
 
 const getAvatar = async (req, res) => {
-  const authFragments = req.headers.authorization.split(' ');
-  let { id } = parseJwt(authFragments[1]);
-  let person = await userModel.getUserById(id);
-  let avatar = person[0].avatar;
+  let person = req.user;
+  let avatar = person.avatar;
   if (!avatar) return res.status(404).json({ avatar: avatar });
   let type = avatar.match(/\.(jpg|JPG|jpeg|JPEG|png|PNG|gif|GIF)$/);
   type = type[1];
@@ -108,15 +99,15 @@ const setAvatar = async (req, res) => {
 };
 
 const getProfile = async (req, res) => {
-  const authFragments = req.headers.authorization.split(' ');
-  let { id } = parseJwt(authFragments[1]);
-  let result = await userModel.getUserById(id);
-  if (result.length === 0) return res.status(404).json({ message: 'Invalid' });
+  let result = req.user;
   return res.status(200).json({
-    name: result[0].name,
-    phone: result[0].phone,
-    email: result[0].email,
-    address: result[0].address,
+    data: {
+      id: result.id,
+      name: result.name,
+      phone: result.phone,
+      email: result.email,
+      address: result.address,
+    },
   });
 };
 
@@ -154,28 +145,20 @@ const editProfile = async (req, res) => {
 };
 
 const changePassword = async (req, res) => {
-  const authFragments = req.headers.authorization.split(' ');
-  let { id } = parseJwt(authFragments[1]);
-  let user = await userModel.getUserById(id);
+  const user = req.user;
   let { oldPassword, newPassword } = req.body;
+
+  if (!(await compare(oldPassword, user.password)))
+    return res.status(422).json({ message: 'Password is incorrect' });
   if (!validation.isString(newPassword, 8))
-    return res
-      .status(400)
-      .json({ message: 'Mật khẩu mới phải có ít nhất 6 kí tự!' });
-  if (!(await compare(oldPassword, user[0].password)))
-    return res
-      .status(422)
-      .json({ message: 'Nhập sai mật khẩu! Vui lòng nhập lại!' });
-  if (oldPassword === newPassword) {
-    return res
-      .status(400)
-      .json({ message: 'Mật khẩu mới phải khác mật khẩu cũ!' });
-  }
-  const hashedPw = await hash(newPassword, 12);
-  let result = await userModel.changePassword(hashedPw, id);
-  if (result !== 'success') return res.status(400).json({ message: result });
+    return res.status(422).json({ message: 'New password is invalid' });
+
+  const hashedPw = await hash(newPassword, parseInt(process.env.SALT_ROUND));
+  let result = await userModel.changePassword(hashedPw, user.id);
+  if (!result)
+    return res.status(400).json({ message: 'Error change password' });
   return res.status(200).json({
-    message: result,
+    message: 'Password has changed',
   });
 };
 
