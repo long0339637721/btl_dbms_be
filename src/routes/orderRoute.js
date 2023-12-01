@@ -10,7 +10,7 @@ let router = express.Router();
 router.use(checkAuthMiddleware);
 router.get('/getOrderByUser', orderController.getOrderByUser);
 router.get('/viewDetailOrder/:orderId', orderController.viewDetailOrder);
-router.post('/addOrder', orderController.addOrder);
+router.post('/addOrder', orderController.addOrder); // payment method
 router.get('/getAllShipping', orderController.getAllShipping);
 router.get('/getShipping/:id', orderController.getShipping);
 router.get('/getVoucherUser', orderController.getVoucherUser);

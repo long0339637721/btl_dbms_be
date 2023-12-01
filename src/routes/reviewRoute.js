@@ -41,8 +41,8 @@ router.get('/:product_id', reviewController.getReviewByProductId);
 
 // manager
 router.use(checkAuthMiddleware);
-router.post('', upload.single('image'), reviewController.addReview);
-router.patch('', upload.single('image'), reviewController.editReview);
+router.post('', upload.single('image'), reviewController.addReview); // upload image
+router.patch('', upload.single('image'), reviewController.editReview); // upload image
 router.delete('/:review_id', reviewController.deleteReview);
 
 module.exports = router;

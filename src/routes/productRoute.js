@@ -51,12 +51,12 @@ router.get('/getAllAttribute', productController.getAllAttribute);
 router.post('/addAttribute', productController.addAttribute);
 router.patch('/editAttribute/:id', productController.editAttribute);
 router.delete('/deleteAttribute/:id', productController.deleteAttribute);
-router.post('/addProduct', upload.single('html'), productController.addProduct);
+router.post('/addProduct', upload.single('html'), productController.addProduct); // upload image
 router.delete('/deleteProduct/:id', productController.deleteProduct);
 router.patch(
   '/editProduct/:id',
   upload.single('html'),
   productController.editProduct,
-);
+); // upload image
 
 module.exports = router;

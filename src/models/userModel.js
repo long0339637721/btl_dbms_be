@@ -76,7 +76,8 @@ const changePassword = async (password, id) => {
       .query(`update users set password = @password where id = @id`);
     return true;
   } catch (error) {
-    return error;
+    console.log(error);
+    return false;
   }
 };
 

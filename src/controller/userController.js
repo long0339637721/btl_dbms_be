@@ -163,16 +163,14 @@ const changePassword = async (req, res) => {
 };
 
 const forgetPassword = async (req, res) => {
-  let { email, phone } = req.body;
-
-  let users = await userModel.getUserByPhone(phone);
-  if (Object.keys(users).length === 0)
+  const { email } = req.body;
+  if (!validation.isEmail(email))
+    return res.status(422).json({ message: 'Email is invalid' });
+  const user = await userModel.getUserByEmail(email);
+  if (user.length === 0)
     return res.status(404).json({
-      message: 'Không tìm thấy người dùng',
+      message: 'Not Found',
     });
-  let user = users[0];
-  if (email !== user.email)
-    return res.status(404).json({ message: 'Không tìm thấy người dùng' });
   let pass = Math.floor(Math.random() * 110000000000);
   const hashedPw = await hash(
     pass.toString(),
@@ -180,14 +178,12 @@ const forgetPassword = async (req, res) => {
   );
   sendEmail(
     email,
-    'Reset password Easy Electronic',
-    'View',
+    'Phone store: Reset password',
+    '',
     '<h1>Pass mới của bạn là: ' + pass + '</h1>',
   );
-  let rs = userModel.changePassword(hashedPw, user.id);
-  return res.status(200).json({
-    message: 'success',
-  });
+  const rs = userModel.changePassword(hashedPw, user[0].id);
+  if (rs) return res.status(200).json({ message: true });
 };
 
 module.exports = {
