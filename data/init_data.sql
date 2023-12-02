@@ -566,3 +566,14 @@ INSERT INTO vouchers (
     50,
     '2023-12-30'
   );
+INSERT INTO orders (user_id, payment_id, shipping_id, order_status, notice)
+VALUES (3, 1, 1, 'Delivery', 'notice'),
+(3, 1, 1, 'Confirm', 'notice 2');
+
+INSERT INTO order_details VALUES
+(1, 1, 3),
+(1, 3, 2),
+(1, 5, 1),
+(2, 2, 1),
+(2, 4, 2),
+(2, 6, 3);

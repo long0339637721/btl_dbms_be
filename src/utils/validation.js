@@ -8,6 +8,9 @@ function isDateString(value) {
 function isNumber(value) {
   return /^-?\d+$/.test(value);
 }
+function isNumberOrNull(value) {
+  return value === null || isNumber(value);
+}
 function isPhoneNumber(value) {
   let phoneRegex = /^\d{10}$/;
   return phoneRegex.test(value);
@@ -32,6 +35,27 @@ function checkArrays(arr1, arr2) {
   }
   return true;
 }
+function hasRequiredProperties(arr) {
+  if (!Array.isArray(arr)) {
+    return false;
+  }
+
+  for (let i = 0; i < arr.length; i++) {
+    const obj = arr[i];
+    if (
+      typeof obj !== 'object' ||
+      !obj.hasOwnProperty('product_id') ||
+      typeof obj.product_id !== 'number' ||
+      !obj.hasOwnProperty('count') ||
+      typeof obj.count !== 'number' ||
+      obj.count < 0
+    ) {
+      return false;
+    }
+  }
+
+  return true;
+}
 
 module.exports = {
   isString,
@@ -39,5 +63,7 @@ module.exports = {
   isEmail,
   isPhoneNumber,
   isNumber,
+  isNumberOrNull,
   checkArrays,
+  hasRequiredProperties,
 };

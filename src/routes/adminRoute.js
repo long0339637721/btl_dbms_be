@@ -42,6 +42,6 @@ router.delete('/deleteUser/:id', adminController.deleteUser);
 //manager staff
 router.use(checkAuthAdminMiddleware);
 router.get('/getAllStaff', adminController.getAllStaff);
-router.post('/addStaff', upload.any(), adminController.addStaff);
+router.post('/addStaff', upload.any(), adminController.addStaff); // upload image
 
 module.exports = router;
