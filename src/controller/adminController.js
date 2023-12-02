@@ -9,6 +9,20 @@ const getAllCustomer = async (req, res) => {
   return res.status(200).json({ data: customers });
 };
 
+const getAllCustomerByOrder = async (req, res) => {
+  const minOrderValue = req.query.minOrderValue || 0;
+  const startTime = req.query.startTime || '2000-01-01';
+  let endTime = req.query.endTime || new Date().toISOString().split('T')[0];
+  endTime = endTime + 'T23:59:59.999Z';
+  console.log(minOrderValue, startTime, endTime);
+  let rs = await adminModel.getAllCustomerByOrder(
+    minOrderValue,
+    startTime,
+    endTime,
+  );
+  return res.status(200).json({ data: rs });
+};
+
 const getUserById = async (req, res) => {
   let user = await adminModel.getUserById(req.params.id);
   return res.status(200).json({ data: user[0] });
@@ -74,6 +88,7 @@ const addStaff = async (req, res) => {
 
 module.exports = {
   getAllCustomer,
+  getAllCustomerByOrder,
   getAllStaff,
   getUserById,
   getUserByPhone,

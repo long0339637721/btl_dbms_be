@@ -6,7 +6,31 @@ const getAllUserByRole = async (role = 'user') => {
     const user = await pool
       .request()
       .input('role', mssql.VarChar, role)
-      .query(`SELECT * FROM Users where role = @role`);
+      .query(`SELECT * FROM Users WHERE role = @role`);
+    return user.recordset;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};
+const getAllCustomerByOrder = async (minOrderValue, startTime, endTime) => {
+  try {
+    const user = await pool
+      .request()
+      .input('minOrderValue', mssql.Int, minOrderValue)
+      .input('startTime', mssql.DateTime, startTime)
+      .input('endTime', mssql.DateTime, endTime)
+      .query(
+        `SELECT id, name, email
+        FROM users 
+        WHERE id IN (SELECT O.user_id
+        FROM order_details AS OD, products AS P, orders AS O 
+        WHERE OD.product_id = P.id 
+        AND OD.order_id = O.id 
+        AND O.time_order >= @startTime AND O.time_order <= @endTime
+        GROUP BY O.user_id 
+        HAVING SUM(P.price*OD.count) >= @minOrderValue)`,
+      );
     return user.recordset;
   } catch (error) {
     console.log(error);
@@ -18,7 +42,7 @@ const getUserById = async (id) => {
     const user = await pool
       .request()
       .input('id', mssql.Int, id)
-      .query(`SELECT * FROM Users where id = @id`);
+      .query(`SELECT * FROM Users WHERE id = @id`);
     return user.recordset;
   } catch (error) {
     console.log(error);
@@ -30,7 +54,7 @@ const deleteUser = async (id) => {
     const res = await pool
       .request()
       .input('id', mssql.Int, id)
-      .query(`DELETE from Users where id = @id`);
+      .query(`DELETE FROM Users WHERE id = @id`);
     return res.recordset;
   } catch (error) {
     console.log(error);
@@ -68,6 +92,7 @@ const addStaff = async (name, email, phone, password, address) => {
 
 module.exports = {
   getAllUserByRole,
+  getAllCustomerByOrder,
   getUserById,
   deleteUser,
   getAllStaff,

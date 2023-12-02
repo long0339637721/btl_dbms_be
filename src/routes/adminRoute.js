@@ -35,6 +35,7 @@ let upload = multer({ storage: storage, fileFilter: imageFilter });
 // manager user
 router.use(checkAuthStaffMiddleware);
 router.get('/getAllCustomer', adminController.getAllCustomer);
+router.get('/getCustomerByOrder', adminController.getAllCustomerByOrder);
 router.get('/getUser/:id', adminController.getUserById);
 router.get('/getUserByPhone/:phone', adminController.getUserByPhone);
 router.delete('/deleteUser/:id', adminController.deleteUser);
