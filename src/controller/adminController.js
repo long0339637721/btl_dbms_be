@@ -14,7 +14,7 @@ const getAllCustomerByOrder = async (req, res) => {
   const startTime = req.query.startTime || '2000-01-01';
   let endTime = req.query.endTime || new Date().toISOString().split('T')[0];
   endTime = endTime + 'T23:59:59.999Z';
-  console.log(minOrderValue, startTime, endTime);
+  // console.log(minOrderValue, startTime, endTime);
   let rs = await adminModel.getAllCustomerByOrder(
     minOrderValue,
     startTime,

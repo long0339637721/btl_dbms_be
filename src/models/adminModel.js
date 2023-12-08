@@ -21,7 +21,7 @@ const getAllCustomerByOrder = async (minOrderValue, startTime, endTime) => {
       .input('startTime', mssql.DateTime, startTime)
       .input('endTime', mssql.DateTime, endTime)
       .query(
-        `SELECT id, name, email
+        `SELECT id, name, email, phone
         FROM users 
         WHERE id IN (SELECT O.user_id
         FROM order_details AS OD, products AS P, orders AS O 
