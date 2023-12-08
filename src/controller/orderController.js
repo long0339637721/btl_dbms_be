@@ -115,6 +115,10 @@ let getVoucherUser = async (req, res) => {
 let getOrderByUser = async (req, res) => {
   const user = req.user;
   const order = await orderModel.getOrderByUser(user.id);
+  for (let i = 0; i < order.length; i++) {
+    const orderDetail = await orderModel.viewDetailOrder(order[i].id);
+    order[i].order_detail = orderDetail;
+  }
   return res.status(200).json({ data: order });
 };
 
@@ -206,9 +210,14 @@ let addOrder = async (req, res) => {
 
 let getOrderAdmin = async (req, res) => {
   const { userId } = req.params;
+  const orderStatus = req.query.status ?? 'Confirm';
   if (!validation.isNumber(userId))
     return res.status(400).json({ message: 'Bad Request' });
-  const order = await orderModel.getOrderByUser(userId);
+  const order = await orderModel.getOrderByUser(userId, orderStatus);
+  for (let i = 0; i < order.length; i++) {
+    const orderDetail = await orderModel.viewDetailOrder(order[i].id);
+    order[i].order_detail = orderDetail;
+  }
   return res.status(200).json({ data: order });
 };
 

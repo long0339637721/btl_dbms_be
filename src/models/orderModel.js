@@ -32,11 +32,34 @@ const getVoucherValue = async (voucher_id) => {
     );
   return rs.recordset;
 };
-let getOrderByUser = async (id) => {
+let getOrderByUser = async (id, status) => {
+  if (status) {
+    let order = await pool
+      .request()
+      .input('id', mssql.Int, id)
+      .input('status', mssql.NVarChar, status)
+      .query(
+        `SELECT o.*, SUM(od.count * p.price) AS total_payment
+        FROM orders o, order_details od, products p
+        WHERE o.user_id = @id 
+        AND o.order_status = @status 
+        AND od.order_id = o.id 
+        AND od.product_id = p.id
+        GROUP BY o.id, o.user_id, o.voucher_id, o.payment_id, o.shipping_id, o.time_order, o.time_get, o.order_status, o.notice`,
+      );
+    return order.recordset;
+  }
   let order = await pool
     .request()
     .input('id', mssql.Int, id)
-    .query(`SELECT * FROM orders WHERE user_id = @id`);
+    .query(
+      `SELECT o.*, SUM(od.count * p.price) AS total_payment
+      FROM orders o, order_details od, products p
+      WHERE o.user_id = @id
+      AND od.order_id = o.id 
+      AND od.product_id = p.id
+      GROUP BY o.id, o.user_id, o.voucher_id, o.payment_id, o.shipping_id, o.time_order, o.time_get, o.order_status, o.notice`,
+    );
   return order.recordset;
 };
 const getOrderInfo = async (order_id) => {

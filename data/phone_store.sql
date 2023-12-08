@@ -65,7 +65,7 @@ CREATE TABLE orders (
   shipping_id int NOT NULL,
   time_order datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   time_get datetime,
-  order_status nvarchar(50) NOT NULL,
+  order_status nvarchar(50) NOT NULL CHECK (order_status IN('Confirm', 'Delivery', 'Sucessfully')) DEFAULT 'Confirm'
   notice nvarchar(250) NOT NULL,
   foreign key (voucher_id) references vouchers(id) ON DELETE CASCADE ON UPDATE CASCADE,
   foreign key ([user_id]) references users(id) ON DELETE NO ACTION ON UPDATE NO ACTION,

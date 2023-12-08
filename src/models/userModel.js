@@ -35,7 +35,8 @@ const createUser = async (phone, password, email, name, role) => {
       VALUES (@name,@email,@phone,@password, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, @role)`);
     return true;
   } catch (error) {
-    return error;
+    console.log(error);
+    return false;
   }
 };
 const setAvatar = async (avatar, id) => {
