@@ -1,144 +1,107 @@
-const db = require('../config/db.js')
+const pool = require('../configs/connectDB');
+const mssql = require('mssql');
 
-class User {
-    static getAll(callback) {
-        const query = `SELECT * FROM User`
-        db.query(query, (err, result) => {
-            if (err) {
-                console.error('Error fetching all users: ', err)
-                callback(400, null)
-                return
-            }
-            console.log(query, '\nSUCCESS!')
-            callback(200, result)
-        })
-    }
+const getUserByPhone = async (phone) => {
+  const result = await pool
+    .request()
+    .input('phone', mssql.NVarChar, phone)
+    .query(`select * from users where phone = @phone`);
+  return result.recordset;
+};
+const getUserByEmail = async (email) => {
+  const result = await pool
+    .request()
+    .input('email', mssql.NVarChar, email)
+    .query(`select * from users where email = @email`);
+  return result.recordset;
+};
+const getUserById = async (id) => {
+  const result = await pool
+    .request()
+    .input('id', mssql.Int, id)
+    .query(`select * from users where id = @id`);
+  return result.recordset;
+};
+const createUser = async (phone, password, email, name, role) => {
+  try {
+    await pool
+      .request()
+      .input('name', mssql.NVarChar, name)
+      .input('email', mssql.NVarChar, email)
+      .input('phone', mssql.NVarChar, phone)
+      .input('password', mssql.NVarChar, password)
+      .input('role', mssql.VarChar, role)
+      .query(`insert into users (name, email, phone, password, passwordChangedAt, registryAt, role) 
+      VALUES (@name,@email,@phone,@password, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, @role)`);
+    return true;
+  } catch (error) {
+    return error;
+  }
+};
+const setAvatar = async (avatar, id) => {
+  try {
+    await pool
+      .request()
+      .input('avatar', mssql.NVarChar, avatar)
+      .input('id', mssql.Int, id)
+      .query(`update users set avatar = @avatar where id = @id`);
+    return 'success';
+  } catch (error) {
+    return error;
+  }
+};
+const editProfile = async (name, phone, email, address, id) => {
+  try {
+    await pool
+      .request()
+      .input('name', mssql.NVarChar, name)
+      .input('phone', mssql.NVarChar, phone)
+      .input('email', mssql.NVarChar, email)
+      .input('address', mssql.NVarChar, address)
+      .input('id', mssql.Int, id)
+      .query(
+        `update users set name = @name, phone = @phone, email = @email, address = @address where id = @id`,
+      );
+    return 'success';
+  } catch (error) {
+    return error;
+  }
+};
+const changePassword = async (password, id) => {
+  try {
+    await pool
+      .request()
+      .input('password', mssql.NVarChar, password)
+      .input('id', mssql.Int, id)
+      .query(`update users set password = @password where id = @id`);
+    return true;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+};
 
-    static get(id, callback) {
-        const query = `SELECT * FROM User u WHERE u.ID = ?`
-        db.query(query, id, (err, result) => {
-            if (err) {
-                console.error('Error fetching user ', id, ': ', err)
-                callback(400, null)
-                return
-            }
-            if (result.length === 0) {
-                console.log('Not found ID: ', id)
-                callback(404, null)
-                return
-            }
-            console.log(query, id, '\nSUCCESS!')
-            callback(200, result[0])
-        })
-    }
+const setLastLogin = async (id) => {
+  try {
+    await pool
+      .request()
+      .input('id', mssql.Int, id)
+      .query(`update users set last_login = CURRENT_TIMESTAMP where id = @id`);
+    console.log(`Set last login success for user ${id} successfully`);
+    return true;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};
 
-    static create(newUser, callback) {
-        const query1 = `INSERT INTO USER SET ?`
-        const query2 = `INSERT INTO ${newUser.role == "admin" ? "ADMIN" : "SELLER"} VALUES (?)`
-        const tempUser = {
-            ID: newUser.ID,
-            FullName: newUser.FullName,
-            Sex: newUser.Sex,
-            BDate: newUser.BDate,
-            Username: newUser.Username,
-            Pass: newUser.Pass,
-            refreshToken: null,
-        }
-        db.query(query1, tempUser, (err, result) => {
-            if (err) {
-                console.error('Error create user: ', err)
-                callback(400, null)
-                return
-            }
-            console.log(query1, tempUser, '\nSUCCESS!')
-            db.query(query2, newUser.ID, (err, result) => {
-                if (err) {
-                    console.error('Error add', newUser.role, err)
-                    callback(400, null)
-                    return
-                }
-                console.log(query2, newUser.ID, '\nSUCCESS!')
-                callback(201, result)
-            })
-        })
-    }
-
-    static delete(id, callback) {
-        const query1 = `SELECT * FROM User u WHERE u.ID = ?`
-        const query2 = `DELETE FROM User u WHERE u.ID = ?`
-        db.query(query1, id, (err, result) => {
-            if (err) {
-                console.error('Error fetching user ', id, ': ', err)
-                callback(400, null)
-                return
-            }
-            if (result.length === 0) {
-                console.log('Not found ID: ', id)
-                callback(404, null)
-                return
-            }
-            db.query(query2, id, (err, result) => {
-                if (err) {
-                    console.error('Error delete user ', id, ': ', err)
-                    callback(400, null)
-                    return
-                }
-                console.log(query2, id, '\nDelete success!')
-                callback(200, null)
-                return
-            })
-        })
-    }
-
-    static update(id, newUser, callback) {
-        const query1 = `SELECT * FROM User u WHERE u.ID = ?`
-        const query2 = `UPDATE User SET ? WHERE ID = ?`
-
-        db.query(query1, id, (err, result) => {
-            if (err) {
-                console.error('Error fetching user ', id, ': ', err)
-                callback(400, null)
-                return
-            }
-            if (result.length === 0) {
-                console.log('Not found ID: ', id)
-                callback(404, null)
-                return
-            }
-            let tempUser = {
-                ID: newUser.ID ? newUser.ID : result[0].ID,
-                FullName: newUser.FullName ? newUser.FullName : result[0].FullName,
-                Sex: newUser.Sex ? newUser.Sex : result[0].Sex,
-                BDate: newUser.BDate ? newUser.BDate : result[0].BDate,
-                Username: newUser.Username ? newUser.Username : result[0].Username,
-                Pass: newUser.Pass ? newUser.Pass : result[0].Pass,
-                refreshToken: null,
-            }
-            db.query(query2, [tempUser, id], (err, result) => {
-                if (err) {
-                    console.error('Error update user ', id, ': ', err)
-                    callback(400, null)
-                    return
-                }
-                console.log(query2, id, tempUser, '\nUpdate success!')
-                callback(200, result)
-                return
-            })
-        })
-    }
-
-    static getByRole(role, callback) {
-        const query = `SELECT * FROM user u where u.ID in (select ID from ${role})`
-        db.query(query, role, (err, result) => {
-            if (err) {
-                console.error('Error fetching role ', role, ': ', err)
-                callback(400, null)
-                return
-            }
-            console.log(query, '\nSUCCESS!')
-            callback(200, result[0])
-        })
-    }
-}
-
-module.exports = User
+module.exports = {
+  getUserByPhone,
+  createUser,
+  setAvatar,
+  getUserById,
+  editProfile,
+  changePassword,
+  getUserByEmail,
+  setLastLogin,
+};
